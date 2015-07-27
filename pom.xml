@@ -6,11 +6,12 @@
 
     <groupId>com.kizema.ivan</groupId>
     <artifactId>ability</artifactId>
-    <version>1.0-SNAPSHOT</version>
-
-    <!--<modules>-->
-        <!--<module>module1</module>-->
-    <!--</modules>-->
+    <packaging>pom</packaging>
+        <version>0.1.0</version>
+    <modules>
+        <module>ability-data</module>
+        <module>ability-core</module>
+    </modules>
 
     <properties>
         <java.version>1.7</java.version>
@@ -18,6 +19,7 @@
         <logback.version>1.1.2</logback.version>
         <groovy.version>2.4.3</groovy.version>
         <scallop.version>0.9.5</scallop.version>
+        <avro.version>1.7.7</avro.version>
     </properties>
 
     <dependencies>

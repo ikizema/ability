@@ -1,6 +1,5 @@
-package com.kizema.ivan
+package com.kizema.ivan.cli
 
-import com.kizema.ivan.cli.{ListCommandsCLIMethod, ListCommandsCLI}
 import org.slf4j.LoggerFactory
 
 /**

@@ -4,6 +4,7 @@ package com.kizema.ivan.cli
  * Created by Ivan Kizema on 15-07-27.
  */
 
+import com.kizema.ivan.HelloWorld
 import org.slf4j.LoggerFactory
 
 object ListCommandsCLIMethod {
@@ -26,7 +27,7 @@ object ListCommandsCLIMethod {
 
   // --execute
   def execute() {
+    HelloWorld.sayHello()
     logger.info("--execute")
-
   }
 }

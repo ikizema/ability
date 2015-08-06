@@ -27,19 +27,11 @@
                             <goal>idl-protocol</goal>
                         </goals>
                         <configuration>
-                            <sourceDirectory>${project.basedir}/src/main/resources/com/kizema/ivan/ability/data</sourceDirectory>
+                            <sourceDirectory>${project.basedir}/src/main/resources/com/kizema/ivan/avrodata</sourceDirectory>
                         </configuration>
                     </execution>
                 </executions>
             </plugin>
         </plugins>
     </build>
-
-    <dependencies>
-        <dependency>
-            <groupId>org.apache.avro</groupId>
-            <artifactId>avro</artifactId>
-            <version>${avro.version}</version>
-        </dependency>
-    </dependencies>
 </project>

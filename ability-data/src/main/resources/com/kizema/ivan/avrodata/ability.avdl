@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-@namespace("com.kizema.ivan.ability.data")
+@namespace("com.kizema.ivan.avrodata")
 protocol AvroSparkSQL {
     enum Color {
         Purple,
@@ -29,5 +29,10 @@ protocol AvroSparkSQL {
         union { null, string } paternalId = null;
         union { null, string } maternalId = null;
         union { null, Color } favorite_color = null;
+    }
+    record Customer {
+       union { null, long } id = null;
+       union { null, string } name = null;
+       union { null, string } country = null;
     }
 }

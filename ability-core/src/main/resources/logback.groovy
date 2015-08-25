@@ -12,15 +12,17 @@ appender("STDOUT", ConsoleAppender) {
     pattern = "%d{HH:mm:ss.SSS} [%thread] [%-5level] [%logger{6}] : %msg%n"
   }
 }
-//root(DEBUG, ["STDOUT"])
-logger("com.kizema.ivan", DEBUG, ["STDOUT"])
+root(INFO, ["STDOUT"])                            // All packages
+//logger("com.ability", DEBUG, ["STDOUT"])        // Only identified package
 
-def bySecond = timestamp("yyyyMMdd'T'HHmmss")
-appender("FILE", FileAppender) {
-  file = "./log/ability_${bySecond}.log"
-  append = true
-  encoder(PatternLayoutEncoder) {
-    pattern = "%level %logger - %msg%n"
-  }
-}
-logger("com.kizema.ivan", DEBUG, ["FILE"])
+
+// Activation logger in file
+//def bySecond = timestamp("yyyyMMdd'T'HHmmss")
+//appender("FILE", FileAppender) {
+//  file = "./log/ability_${bySecond}.log"
+//  append = true
+//  encoder(PatternLayoutEncoder) {
+//    pattern = "%level %logger - %msg%n"
+//  }
+//}
+//logger("com.ability", DEBUG, ["FILE"])

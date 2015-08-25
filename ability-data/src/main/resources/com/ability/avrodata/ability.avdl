@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-@namespace("com.kizema.ivan.avrodata")
+@namespace("com.ability.avrodata")
 protocol AvroSparkSQL {
     enum Color {
         Purple,

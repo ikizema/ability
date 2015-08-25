@@ -4,13 +4,15 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.kizema.ivan</groupId>
+    <groupId>com.ability</groupId>
     <artifactId>ability</artifactId>
     <packaging>pom</packaging>
-        <version>0.1.0</version>
+    <version>0.1.0</version>
     <modules>
         <module>ability-data</module>
         <module>ability-core</module>
+        <module>ability-web</module>
+        <module>ability-ee</module>
     </modules>
 
     <properties>
@@ -20,6 +22,7 @@
         <groovy.version>2.4.3</groovy.version>
         <scallop.version>0.9.5</scallop.version>
         <avro.version>1.7.7</avro.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
     <dependencies>
@@ -56,12 +59,6 @@
             <version>${groovy.version}</version>
         </dependency>
 
-        <!-- scallop for CLI parser -->
-        <dependency>
-            <groupId>org.rogach</groupId>
-            <artifactId>scallop_2.10</artifactId>
-            <version>${scallop.version}</version>
-        </dependency>
     </dependencies>
 
 </project>

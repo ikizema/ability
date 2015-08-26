@@ -12,7 +12,7 @@ appender("STDOUT", ConsoleAppender) {
     pattern = "%d{HH:mm:ss.SSS} [%thread] [%-5level] [%logger{6}] : %msg%n"
   }
 }
-root(INFO, ["STDOUT"])                            // All packages
+root(DEBUG, ["STDOUT"])                            // All packages
 //logger("com.ability", DEBUG, ["STDOUT"])        // Only identified package
 
 

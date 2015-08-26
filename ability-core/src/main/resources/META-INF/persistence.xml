@@ -5,6 +5,8 @@
              version="2.0">
     <persistence-unit name="ability" transaction-type="JTA">
         <jta-data-source>java:jboss/datasources/ability</jta-data-source>
+        <class>com.ability.model.Vin</class>
+        <exclude-unlisted-classes>false</exclude-unlisted-classes>
         <properties>
             <property name="hibernate.hbm2ddl.auto" value="update"/>
             <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/>

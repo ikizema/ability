@@ -13,8 +13,9 @@ import java.util.Date;
 public abstract class BaseModel implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_ABILITY")
-    @SequenceGenerator(name = "SEQ_ABILITY", sequenceName = "SEQ_ABILITY", allocationSize = 20)
+//    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_ABILITY")
+//    @SequenceGenerator(name = "SEQ_ABILITY", sequenceName = "SEQ_ABILITY", allocationSize = 20)
+    @GeneratedValue(strategy=GenerationType.AUTO)
     protected Long id;
 
     @JsonIgnore

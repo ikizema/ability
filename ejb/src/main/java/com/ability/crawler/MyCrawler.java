@@ -20,7 +20,7 @@ import org.slf4j.LoggerFactory;
 public class MyCrawler extends WebCrawler {
     private static final Logger logger = LoggerFactory.getLogger(MyCrawler.class.getCanonicalName());
     private String context = "SAQ";
-    private List<String> pageFilters = Arrays.asList("http://www.saq.com/page/fr/saqcom/vin-rouge");
+    private List<String> pageFilters = Arrays.asList("http://www.saq.com/page/fr/saqcom/vin-blanc");
 
     private final static Pattern FILTERS = Pattern.compile(".*(\\.(css|js|gif|jpg"
             + "|png|mp3|mp3|zip|gz))$");

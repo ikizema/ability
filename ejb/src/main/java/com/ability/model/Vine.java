@@ -1,8 +1,9 @@
 package com.ability.model;
 
-import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -11,55 +12,57 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 @Entity
 @XmlRootElement
-@Table(name = "vine")
-public class Vin extends BaseModel {
+@Table(name = "Vine")
+public class Vine extends BaseModel {
 
-    @NotBlank
+    @NotNull
+    @NotEmpty
     @Column(name = "client_ref", length = 2000)
     private String referenceClient;
 
-    @NotBlank
+    @NotNull
+    @NotEmpty
     @Column(name = "PRODUCT_URL", unique=true, length = 2000)
     private String referenceURL;
 
-    @NotBlank
+    @NotNull
+    @NotEmpty
     @Column(name = "IMAGE_URL", length = 2000)
     private String imageURL;
 
-    @NotBlank
+    @NotNull
+    @NotEmpty
     @Column(name = "product_name", length = 2000)
     private String productName;
 
-    @NotBlank
+    @NotNull
+    @NotEmpty
     @Column(name = "product_type")
     private String productType;
 
-    @NotBlank
+    @NotNull
+    @NotEmpty
     @Column(name = "code_SAQ", unique=true)
     private String codeSAQ;
 
-    @NotBlank
+    @NotNull
+    @NotEmpty
     @Column(name = "code_CPU", unique=true)
     private String codeCPU;
 
-    @Column(name = "produceCountry", nullable = true)
+    @Column(name = "produceCountry")
     private String produceCountry;
 
-    @Column(name = "produceRegion", nullable = true)
+    @Column(name = "produceRegion")
     private String produceRegion;
 
-    @Column(name = "producer", nullable = true)
+    @Column(name = "producer")
     private String producer;
 
-    @Column(name = "deg_alc", nullable = true)
+    @Column(name = "deg_alc")
     private String degAlcool;
 
-    public Vin() {
-    }
-
-    public Vin(String referenceClient, String referenceURL) {
-        this.referenceClient = referenceClient;
-        this.referenceURL = referenceURL;
+    public Vine() {
     }
 
     public Long getId() {
@@ -160,7 +163,7 @@ public class Vin extends BaseModel {
 
     @Override
     public String toString() {
-        return "Vin{" +
+        return "Vine{" +
                 "referenceClient='" + referenceClient + '\'' +
                 ", referenceURL='" + referenceURL + '\'' +
                 ", imageURL='" + imageURL + '\'' +

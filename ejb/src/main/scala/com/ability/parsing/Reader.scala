@@ -2,13 +2,13 @@ package com.ability.parsing
 
 import java.net.URL
 import java.util
-
 import org.apache.commons.lang3.StringEscapeUtils
 import org.htmlcleaner.HtmlCleaner
 import org.slf4j.LoggerFactory
-
+import com.google.gson.Gson
 import scala.collection.mutable.ListBuffer
-import com.ability.model.Vin
+import com.ability.model.Vine
+import scalaj.http._
 
 /**
  * Created by ikizema on 15-08-25.
@@ -18,11 +18,12 @@ object Reader {
 
   def main(args: Array[String]): Unit = {
     val vin = Reader.getVineFromUrl("saq","http://www.saq.com/page/fr/saqcom/vin-rouge/14-hands-hot-to-trot-red-blend-2012/12245611")
-    logger.debug(vin.toString)
+//    persistData(new Vine())
+//    logger.debug(vin.toString)
   }
 
-  def getVineFromUrl(refClient:String, url: String) : Vin = {
-    val vin = new Vin()
+  def getVineFromUrl(refClient:String, url: String) : Vine = {
+    val vin = new Vine()
     vin.setReferenceURL(url)
     vin.setReferenceClient(refClient)
     var stories = new ListBuffer[String]
@@ -92,6 +93,18 @@ object Reader {
       // Change size settings : ?rect=0,0,1000,1500&scl=1&id=-Hgqe3
       vin.setImageURL("http://s7d9.scene7.com/is/image/SAQ/"+vin.getCodeSAQ+"-1?rect=0,0,1000,1500&scl=1&id=-Hgqe3")
     }
+
+    persistData(vin)
+
     return vin
+  }
+
+  def persistData(vin:Vine) {
+    val vinAsJson = new Gson().toJson(vin)
+    val url = "http://localhost:8080/ability-web/rest/vines"
+    val response: HttpResponse[String] = Http(url).header("Content-Type", "application/json")
+      .postData(vinAsJson)
+      .asString
+    logger.info(response.body)
   }
 }

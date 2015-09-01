@@ -1,21 +1,18 @@
 package com.ability.crawler;
 
-import com.ability.model.Vin;
-import com.ability.service.ServiceVin;
+import com.ability.model.Vine;
 import edu.uci.ics.crawler4j.crawler.Page;
 import edu.uci.ics.crawler4j.crawler.WebCrawler;
 import edu.uci.ics.crawler4j.url.WebURL;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Pattern;
 
 import com.ability.parsing.Reader;
-
-import javax.ejb.EJB;
-import javax.inject.Inject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Created by ikizema on 15-08-21.
@@ -27,9 +24,6 @@ public class MyCrawler extends WebCrawler {
 
     private final static Pattern FILTERS = Pattern.compile(".*(\\.(css|js|gif|jpg"
             + "|png|mp3|mp3|zip|gz))$");
-
-    @Inject
-    ServiceVin serviceVin;
 
     /**
      * This method receives two parameters. The first parameter is the page
@@ -59,8 +53,8 @@ public class MyCrawler extends WebCrawler {
     @Override
     public void visit(Page page) {
         String url = page.getWebURL().getURL();
-        Vin vin = Reader.getVineFromUrl(this.getContext(), url);
-        logger.info(vin.toString());
+        Vine vine = Reader.getVineFromUrl(this.getContext(), url);
+        logger.info(vine.toString());
     }
 
     public String getContext() {
@@ -77,5 +71,18 @@ public class MyCrawler extends WebCrawler {
 
     public void setPageFilters(List<String> pageFilters) {
         this.pageFilters = pageFilters;
+    }
+
+    /**
+     * This function is called by controller before finishing the job.
+     * You can put whatever stuff you need here.
+     */
+    @Override
+    public void onBeforeExit() {
+        dumpMyData();
+    }
+
+    public void dumpMyData() {
+
     }
 }

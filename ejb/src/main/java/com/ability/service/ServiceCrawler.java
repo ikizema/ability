@@ -2,22 +2,17 @@ package com.ability.service;
 
 import com.ability.crawler.MyCrawler;
 import com.ability.dto.CrawlerRequest;
-import com.ability.model.Member;
-import com.ability.model.Vin;
-import com.ability.parsing.Reader;
 import edu.uci.ics.crawler4j.crawler.CrawlConfig;
 import edu.uci.ics.crawler4j.crawler.CrawlController;
 import edu.uci.ics.crawler4j.fetcher.PageFetcher;
 import edu.uci.ics.crawler4j.robotstxt.RobotstxtConfig;
 import edu.uci.ics.crawler4j.robotstxt.RobotstxtServer;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Logger;
 
 
 /**
@@ -25,52 +20,25 @@ import java.util.List;
  */
 
 @Stateless
-@LocalBean
 public class ServiceCrawler {
-    private static final Logger logger = LoggerFactory.getLogger(ServiceCrawler.class.getCanonicalName());
-    private String context;
-    private List<String> beginURLs;
-    private Integer maxPages;
-    private List<String> pageFilters;
-
     @Inject
-    ServiceVin serviceVin;
+    private Logger logger;
 
-    @Inject
-    MemberRegistration memberRegistration;
+    public ServiceCrawler() {
+    }
 
     public void main(String[] args) throws Exception {
         CrawlerRequest crawlerRequest = new CrawlerRequest();
         crawlerRequest.setContext("SAQ");
         crawlerRequest.setBeginURLs(Arrays.asList("http://www.saq.com/page/fr/saqcom/vin-rouge/14-hands-hot-to-trot-red-blend-2012/12245611"));
         crawlerRequest.setMaxPages(2);
-        ServiceCrawler serviceCrawler = new ServiceCrawler(crawlerRequest);
-        serviceCrawler.run();
+        this.run(crawlerRequest);
     }
 
-    public ServiceCrawler() {
-    }
+    public void run(CrawlerRequest crawlerRequest) throws Exception {
+        logger.info("Begin ServiceCrawler runner...");
 
-    public ServiceCrawler(CrawlerRequest crawlerRequest) {
-        this.setBeginURLs(crawlerRequest.getBeginURLs());
-        this.setContext(crawlerRequest.getContext());
-        this.setMaxPages(crawlerRequest.getMaxPages());
-        this.setPageFilters(crawlerRequest.getPageFilters());
-    }
-
-    public void testSave() throws Exception {
-//        Vin vin = Reader.getVineFromUrl(this.getContext(), this.getBeginURLs().get(0));
-//        logger.info(vin.toString());
-//        serviceVin.save(vin);
-        Member member= new Member();
-        member.setEmail("ivan@gmail.com");
-        member.setName("Ivan");
-        member.setPhoneNumber("0000000000");
-        memberRegistration.register(member);
-    }
-
-    public void run() throws Exception {
-        logger.debug("Begin ServiceCrawler runner...");
+        MyCrawler mc = new MyCrawler();
 
         /*
          * General Settings
@@ -83,8 +51,8 @@ public class ServiceCrawler {
          */
         CrawlConfig config = new CrawlConfig();
         config.setCrawlStorageFolder(crawlStorageFolder);
-        if (this.getMaxPages() != null) {
-            config.setMaxPagesToFetch(this.getMaxPages());
+        if (crawlerRequest.getMaxPages() != null) {
+            config.setMaxPagesToFetch(crawlerRequest.getMaxPages());
         }
 
         /*
@@ -100,7 +68,7 @@ public class ServiceCrawler {
          * URLs that are fetched and then the crawler starts following links
          * which are found in these pages
          */
-        for (String url : this.getBeginURLs()) {
+        for (String url : crawlerRequest.getBeginURLs()) {
             controller.addSeed(url);
         }
 
@@ -110,38 +78,7 @@ public class ServiceCrawler {
          */
         controller.start(MyCrawler.class, numberOfCrawlers);
 
-        logger.debug("End ServiceCrawler runner !");
+        logger.info("End ServiceCrawler runner !");
     }
 
-    public String getContext() {
-        return context;
-    }
-
-    public void setContext(String context) {
-        this.context = context;
-    }
-
-    public Integer getMaxPages() {
-        return maxPages;
-    }
-
-    public void setMaxPages(Integer maxPages) {
-        this.maxPages = maxPages;
-    }
-
-    public List<String> getBeginURLs() {
-        return beginURLs;
-    }
-
-    public void setBeginURLs(List<String> beginURLs) {
-        this.beginURLs = beginURLs;
-    }
-
-    public List<String> getPageFilters() {
-        return pageFilters;
-    }
-
-    public void setPageFilters(List<String> pageFilters) {
-        this.pageFilters = pageFilters;
-    }
 }

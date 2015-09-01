@@ -1,12 +1,16 @@
 package com.ability.rest;
 
+import com.ability.data.VineRepository;
 import com.ability.dto.CrawlerRequest;
+import com.ability.model.Vine;
 import com.ability.service.ServiceCrawler;
+import com.ability.service.ServiceVin;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
+import javax.ws.rs.*;
+import javax.ws.rs.core.MediaType;
+import java.util.List;
 import java.util.logging.Logger;
 
 /**
@@ -16,15 +20,25 @@ import java.util.logging.Logger;
 @Path("/crawler")
 @RequestScoped
 public class RestCrawler {
-    private static final Logger logger = Logger.getLogger(RestCrawler.class.getCanonicalName());
+    @Inject
+    private Logger logger;
 
-    @Path("/request")
+    @Inject
+    ServiceCrawler serviceCrawler;
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public CrawlerRequest listAllMembers() {
+        return null;
+    }
+
     @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
     public CrawlerRequest processCrawlerRequest(CrawlerRequest crawlerRequest) throws Exception {
         logger.info("Begin processCrawlerRequest");
         long start = System.currentTimeMillis();
-        ServiceCrawler serviceCrawler = new ServiceCrawler(crawlerRequest);
-        serviceCrawler.testSave();
+        serviceCrawler.run(crawlerRequest);
         logger.info("End processCrawlerRequest : "+ (System.currentTimeMillis()-start) + " ms.");
         return crawlerRequest;
     }

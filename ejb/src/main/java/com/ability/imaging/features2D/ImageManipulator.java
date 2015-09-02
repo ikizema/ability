@@ -1,10 +1,7 @@
-package com.ability.imaging;
+package com.ability.imaging.features2D;
 
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
-import org.opencv.core.MatOfKeyPoint;
-import org.opencv.features2d.FeatureDetector;
-import org.opencv.imgcodecs.Imgcodecs;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -20,7 +17,7 @@ import java.net.URL;
  * Created by ikizema on 15-09-01.
  */
 public class ImageManipulator {
-    private static final Logger logger = LoggerFactory.getLogger(ImageDescriptor.class.getCanonicalName());
+    private static final Logger logger = LoggerFactory.getLogger(ImageManipulator.class.getCanonicalName());
 
     public ImageManipulator() {
     }
@@ -118,7 +115,5 @@ public class ImageManipulator {
         Mat newMat = getMat(getBufferedImage(url));
         return newMat;
     }
-
-
 }
 

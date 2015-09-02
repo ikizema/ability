@@ -1,5 +1,6 @@
-package com.ability.imaging;
+package com.ability.imaging.tests;
 
+import com.ability.imaging.features2D.ImageManipulator;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfRect;
@@ -16,7 +17,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 public class FaceDetector {
-    private static final Logger logger = LoggerFactory.getLogger(ImageDescriptor.class.getCanonicalName());
+    private static final Logger logger = LoggerFactory.getLogger(FaceDetector.class.getCanonicalName());
     private static ImageManipulator imageManipulator = new ImageManipulator();
 
     public static void main(String[] args) throws MalformedURLException {

@@ -4,22 +4,35 @@ import java.net.URL
 import java.util
 import org.apache.commons.lang3.StringEscapeUtils
 import org.htmlcleaner.HtmlCleaner
+import org.opencv.features2d.{DescriptorExtractor, FeatureDetector}
 import org.slf4j.LoggerFactory
 import com.google.gson.Gson
 import scala.collection.mutable.ListBuffer
 import com.ability.model.Vine
 import scalaj.http._
+import com.ability.parquet.model._
+import com.ability.parquet.persistance._
+import com.ability.imaging.features2D.ImageFeatures2D
 
 /**
  * Created by ikizema on 15-08-25.
  */
-object Reader {
+class Reader(fileName:String) {
   private val logger = LoggerFactory.getLogger(this.getClass)
+  private val parquetWriter = new ParquetWriter[VineParquet](fileName, VineParquet.getClassSchema)
 
   def main(args: Array[String]): Unit = {
-    val vin = Reader.getVineFromUrl("saq","http://www.saq.com/page/fr/saqcom/vin-rouge/14-hands-hot-to-trot-red-blend-2012/12245611")
-//    persistData(new Vine())
-//    logger.debug(vin.toString)
+    val reader = new Reader("saq_vine_150902")
+    val vin = reader.getVineFromUrl("saq","http://www.saq.com/page/fr/saqcom/vin-rouge/14-hands-hot-to-trot-red-blend-2012/12245611")
+
+    // -- Write-Parquet
+    val parquetWriter = new ParquetWriter[VineParquet](this.fileName, VineParquet.getClassSchema)
+    parquetWriter.persistUnitary(toVineParquet(vin))
+    parquetWriter.close()
+
+    // --show-parquet
+//    val parquetInput = new ParquetLoader("/home/ikizema/DEV/PROJECTS/personal/ability/DATA/avro/Vine_150902.parquet")
+//    parquetInput.showSchema()
   }
 
   def getVineFromUrl(refClient:String, url: String) : Vine = {
@@ -94,17 +107,56 @@ object Reader {
       vin.setImageURL("http://s7d9.scene7.com/is/image/SAQ/"+vin.getCodeSAQ+"-1?rect=0,0,1000,1500&scl=1&id=-Hgqe3")
     }
 
-    persistData(vin)
+    // Persist Data to the Database
+//    persistDataDB(vin)
+
+    // Persist Data to Parquet
+    persistDataParquet(vin)
 
     return vin
   }
 
-  def persistData(vin:Vine) {
+  def persistDataDB(vin:Vine) {
     val vinAsJson = new Gson().toJson(vin)
     val url = "http://localhost:8080/ability-web/rest/vines"
     val response: HttpResponse[String] = Http(url).header("Content-Type", "application/json")
       .postData(vinAsJson)
       .asString
     logger.info(response.body)
+  }
+
+  def persistDataParquet(vin:Vine) {
+    val vineParquet = toVineParquet(vin)
+    parquetWriter.persistUnitary(vineParquet)
+  }
+
+  def persistanceClose(): Unit = {
+    parquetWriter.close()
+  }
+
+  def toVineParquet(vin:Vine) : VineParquet = {
+    val newFeature2D: ImageFeatures2D = new ImageFeatures2D(new URL(vin.getImageURL), true, FeatureDetector.DYNAMIC_ORB, DescriptorExtractor.BRIEF);
+    val descriptor = Descriptor.newBuilder()
+      .setDescriptorType(FeatureDetector.DYNAMIC_ORB+"_"+DescriptorExtractor.BRISK)
+      .setDescriptorHeight(newFeature2D.getEncoder.getHeight)
+      .setDescriptorWidth(newFeature2D.getEncoder.getWidth)
+      .setDescriptorChannels(newFeature2D.getEncoder.getChannels)
+      .setDescriptorData(newFeature2D.getEncoder.getEncodedString)
+      .build()
+    val vineParquet = VineParquet.newBuilder()
+      .setReferenceClient(vin.getReferenceClient)
+      .setReferenceURL(vin.getReferenceURL)
+      .setCodeCPU(vin.getCodeCPU)
+      .setCodeSAQ(vin.getCodeSAQ)
+      .setDegAlcool(vin.getDegAlcool)
+      .setImageURL(vin.getImageURL)
+      .setProduceCountry(vin.getProduceCountry)
+      .setProducer(vin.getProducer)
+      .setProduceRegion(vin.getProduceRegion)
+      .setProductName(vin.getProductName)
+      .setProductType(vin.getProductType)
+      .setDescriptor(descriptor)
+      .build()
+    return vineParquet
   }
 }

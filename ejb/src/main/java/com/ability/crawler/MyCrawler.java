@@ -20,7 +20,9 @@ import org.slf4j.LoggerFactory;
 public class MyCrawler extends WebCrawler {
     private static final Logger logger = LoggerFactory.getLogger(MyCrawler.class.getCanonicalName());
     private String context = "SAQ";
-    private List<String> pageFilters = Arrays.asList("http://www.saq.com/page/fr/saqcom/vin-blanc");
+    private List<String> pageFilters = Arrays.asList("http://www.saq.com/page/fr/saqcom/vin-");
+    private Reader reader = new Reader("saq_vine_150902");
+    private int counter = 0;
 
     private final static Pattern FILTERS = Pattern.compile(".*(\\.(css|js|gif|jpg"
             + "|png|mp3|mp3|zip|gz))$");
@@ -53,8 +55,10 @@ public class MyCrawler extends WebCrawler {
     @Override
     public void visit(Page page) {
         String url = page.getWebURL().getURL();
-        Vine vine = Reader.getVineFromUrl(this.getContext(), url);
-        logger.info(vine.toString());
+        Vine vine = reader.getVineFromUrl(this.getContext(), url);
+        logger.debug(vine.toString());
+        this.counter++;
+        logger.info("Loaded Items : "+this.counter);
     }
 
     public String getContext() {
@@ -79,10 +83,7 @@ public class MyCrawler extends WebCrawler {
      */
     @Override
     public void onBeforeExit() {
-        dumpMyData();
+        reader.persistanceClose();
     }
 
-    public void dumpMyData() {
-
-    }
 }

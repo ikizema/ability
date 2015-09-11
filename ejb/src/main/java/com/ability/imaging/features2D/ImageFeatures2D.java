@@ -35,21 +35,31 @@ public class ImageFeatures2D {
     private MatOfKeyPoint imageKeypoints = null;
     private FeatureDetector featureDetector = null;
     private DescriptorExtractor descriptorExtractor = null;
+    private int detectorType = FeatureDetector.DYNAMIC_ORB;;        // default ORB
+    private int descriptorType = DescriptorExtractor.BRISK;         // default BRISK
 
     public static void main(String[] args) throws MalformedURLException {
-        System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
+//        System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
 //        URL imageURL = new URL("http://s7d9.scene7.com/is/image/SAQ/00518712-1?rect=0,0,1000,1500&scl=1&id=-Hgqe3");
         URL imageURL = new URL("http://www.hack4fun.org/h4f/sites/default/files/bindump/lena_secret.bmp");
-        ImageFeatures2D newFeature2D = new ImageFeatures2D(imageURL, true);
+        ImageFeatures2D newFeature2D = new ImageFeatures2D(imageURL, true, FeatureDetector.DYNAMIC_ORB, DescriptorExtractor.BRIEF);
         imageManipulator.displayImage(newFeature2D.getImage());
         imageManipulator.displayImage(newFeature2D.getDrawMat());
         logger.info(newFeature2D.getImageDescriptorEncoded());
     }
 
     public ImageFeatures2D() {
+        System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
     }
 
     public ImageFeatures2D(URL url, boolean encoded) {
+        System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
+        this.setImage(url);
+        this.generateMatrices(encoded);
+    }
+
+    public ImageFeatures2D(URL url, boolean encoded, int detectorType, int descriptorType) {
+        System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
         this.setImage(url);
         this.generateMatrices(encoded);
     }
@@ -60,10 +70,10 @@ public class ImageFeatures2D {
         this.imageMat.put(0, 0, data);
         this.imageMatGrey = new Mat(this.newImage.getHeight(), this.newImage.getWidth(), CvType.CV_8UC1);
         Imgproc.cvtColor(this.imageMat, this.imageMatGrey, 7);
-        this.featureDetector = FeatureDetector.create(5);
+        this.featureDetector = FeatureDetector.create(this.detectorType);
         this.imageKeypoints = new MatOfKeyPoint();
         this.featureDetector.detect(this.imageMat, this.imageKeypoints);
-        this.descriptorExtractor = DescriptorExtractor.create(3);
+        this.descriptorExtractor = DescriptorExtractor.create(this.descriptorType);
         this.imageDescriptor = new Mat();
         this.descriptorExtractor.compute(this.imageMat, this.imageKeypoints, this.imageDescriptor);
         this.imageDrawMat = new Mat();
@@ -126,6 +136,10 @@ public class ImageFeatures2D {
 
     public String getImageDescriptorEncoded() {
         return this.encoder.getEncodedString();
+    }
+
+    public Encoder getEncoder() {
+        return encoder;
     }
 }
 

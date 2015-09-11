@@ -22,7 +22,7 @@ public class Controller {
 
         CrawlConfig config = new CrawlConfig();
         config.setCrawlStorageFolder(crawlStorageFolder);
-        config.setMaxPagesToFetch(5);
+//        config.setMaxPagesToFetch(100);
 
         /*
          * Instantiate the controller for this crawl.
@@ -37,7 +37,8 @@ public class Controller {
          * URLs that are fetched and then the crawler starts following links
          * which are found in these pages
          */
-        controller.addSeed("http://www.saq.com/page/fr/saqcom/vin-rouge/14-hands-hot-to-trot-red-blend-2012/12245611");
+        //controller.addSeed("http://www.saq.com/page/fr/saqcom/vin-rouge/14-hands-hot-to-trot-red-blend-2012/12245611");
+        controller.addSeed("http://www.saq.com/page/fr/saqcom/vin-rose/baron-herzog-white-zinfandel/10348334");
         // Can add multiple
 
         /*

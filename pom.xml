@@ -18,6 +18,7 @@
         <module>ejb</module>
         <module>web</module>
         <module>ear</module>
+        <module>parquet</module>
     </modules>
 
     <properties>
@@ -51,6 +52,11 @@
         <version.ejb.plugin>2.3</version.ejb.plugin>
         <version.surefire.plugin>2.10</version.surefire.plugin>
         <version.war.plugin>2.1.1</version.war.plugin>
+
+        <!-- Parquet / Avro -->
+        <version.avro>1.7.7</version.avro>
+        <version.parquet>1.6.0</version.parquet>
+        <version.spark>1.4.1</version.spark>
 
         <!-- maven-compiler-plugin -->
         <maven.compiler.target>1.7</maven.compiler.target>

@@ -70,6 +70,8 @@
                 <configuration>
                     <filename>${project.artifactId}.ear</filename>
                     <skip>false</skip>
+                    <execute-commands/>
+                    <executeCommands/>
                 </configuration>
             </plugin>
         </plugins>

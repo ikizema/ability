@@ -9,29 +9,12 @@ import com.google.gson.Gson
 import scala.collection.mutable.ListBuffer
 import com.ability.model.Vine
 import scalaj.http._
-import com.ability.parquet.model._
-import com.ability.parquet.persistance._
 
 /**
  * Created by ikizema on 15-08-25.
  */
 class Parser(fileName:String) {
   private val logger = LoggerFactory.getLogger(this.getClass)
-  private val parquetWriter = new ParquetWriter[VineParquet](fileName, VineParquet.getClassSchema)
-
-  def main(args: Array[String]): Unit = {
-    val reader = new Parser("saq_vine_150902")
-    val vin = reader.getVineFromUrl("saq","http://www.saq.com/page/fr/saqcom/vin-rouge/14-hands-hot-to-trot-red-blend-2012/12245611")
-
-    // -- Write-Parquet
-    val parquetWriter = new ParquetWriter[VineParquet](this.fileName, VineParquet.getClassSchema)
-    parquetWriter.persistUnitary(vin.toVineParquet)
-    parquetWriter.close()
-
-    // --show-parquet
-//    val parquetInput = new ParquetLoader("/home/ikizema/DEV/PROJECTS/personal/ability/DATA/avro/Vine_150902.parquet")
-//    parquetInput.showSchema()
-  }
 
   def getVineFromUrl(refClient:String, url: String) : Vine = {
     val vin = new Vine()
@@ -106,10 +89,7 @@ class Parser(fileName:String) {
     }
 
     // Persist Data to the Database
-//    persistDataDB(vin)
-
-    // Persist Data to Parquet
-//    persistDataParquet(vin)
+    persistDataDB(vin)
 
     return vin
   }
@@ -121,14 +101,5 @@ class Parser(fileName:String) {
       .postData(vinAsJson)
       .asString
     logger.info(response.body)
-  }
-
-  def persistDataParquet(vin:Vine) {
-    val vineParquet = vin.toVineParquet
-    parquetWriter.persistUnitary(vineParquet)
-  }
-
-  def persistanceClose(): Unit = {
-    parquetWriter.close()
   }
 }

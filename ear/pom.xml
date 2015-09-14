@@ -13,7 +13,6 @@
     <packaging>ear</packaging>
 
     <name>ability - ear</name>
-
     <url>http://jboss.org/jbossas</url>
 
     <dependencies>

@@ -89,7 +89,7 @@ class Parser(fileName:String) {
     }
 
     // Persist Data to the Database
-    persistDataDB(vin)
+//    persistDataDB(vin)
 
     return vin
   }

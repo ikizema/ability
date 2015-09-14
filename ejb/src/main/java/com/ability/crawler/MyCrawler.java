@@ -56,7 +56,7 @@ public class MyCrawler extends WebCrawler {
     public void visit(Page page) {
         String url = page.getWebURL().getURL();
         Vine vine = parser.getVineFromUrl(this.getContext(), url);
-        parser.persistDataParquet(vine);
+        parser.persistDataDB(vine);
         logger.debug(vine.toString());
         this.counter++;
         logger.info("Loaded Items : "+this.counter);
@@ -84,7 +84,6 @@ public class MyCrawler extends WebCrawler {
      */
     @Override
     public void onBeforeExit() {
-        parser.persistanceClose();
     }
 
 }

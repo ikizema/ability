@@ -5,12 +5,12 @@ import edu.uci.ics.crawler4j.crawler.Page;
 import edu.uci.ics.crawler4j.crawler.WebCrawler;
 import edu.uci.ics.crawler4j.url.WebURL;
 
-import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.List;
 import java.util.regex.Pattern;
 
-import com.ability.parsing.Reader;
+import com.ability.parsing.Parser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -21,7 +21,7 @@ public class MyCrawler extends WebCrawler {
     private static final Logger logger = LoggerFactory.getLogger(MyCrawler.class.getCanonicalName());
     private String context = "SAQ";
     private List<String> pageFilters = Arrays.asList("http://www.saq.com/page/fr/saqcom/vin-");
-    private Reader reader = new Reader("saq_vine_150902");
+    private Parser parser = new Parser(context+"_vine_"+Calendar.getInstance().getTime());
     private int counter = 0;
 
     private final static Pattern FILTERS = Pattern.compile(".*(\\.(css|js|gif|jpg"
@@ -55,7 +55,8 @@ public class MyCrawler extends WebCrawler {
     @Override
     public void visit(Page page) {
         String url = page.getWebURL().getURL();
-        Vine vine = reader.getVineFromUrl(this.getContext(), url);
+        Vine vine = parser.getVineFromUrl(this.getContext(), url);
+        parser.persistDataParquet(vine);
         logger.debug(vine.toString());
         this.counter++;
         logger.info("Loaded Items : "+this.counter);
@@ -83,7 +84,7 @@ public class MyCrawler extends WebCrawler {
      */
     @Override
     public void onBeforeExit() {
-        reader.persistanceClose();
+        parser.persistanceClose();
     }
 
 }

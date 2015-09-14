@@ -4,7 +4,6 @@ import java.net.URL
 import java.util
 import org.apache.commons.lang3.StringEscapeUtils
 import org.htmlcleaner.HtmlCleaner
-import org.opencv.features2d.{DescriptorExtractor, FeatureDetector}
 import org.slf4j.LoggerFactory
 import com.google.gson.Gson
 import scala.collection.mutable.ListBuffer
@@ -12,22 +11,21 @@ import com.ability.model.Vine
 import scalaj.http._
 import com.ability.parquet.model._
 import com.ability.parquet.persistance._
-import com.ability.imaging.features2D.ImageFeatures2D
 
 /**
  * Created by ikizema on 15-08-25.
  */
-class Reader(fileName:String) {
+class Parser(fileName:String) {
   private val logger = LoggerFactory.getLogger(this.getClass)
   private val parquetWriter = new ParquetWriter[VineParquet](fileName, VineParquet.getClassSchema)
 
   def main(args: Array[String]): Unit = {
-    val reader = new Reader("saq_vine_150902")
+    val reader = new Parser("saq_vine_150902")
     val vin = reader.getVineFromUrl("saq","http://www.saq.com/page/fr/saqcom/vin-rouge/14-hands-hot-to-trot-red-blend-2012/12245611")
 
     // -- Write-Parquet
     val parquetWriter = new ParquetWriter[VineParquet](this.fileName, VineParquet.getClassSchema)
-    parquetWriter.persistUnitary(toVineParquet(vin))
+    parquetWriter.persistUnitary(vin.toVineParquet)
     parquetWriter.close()
 
     // --show-parquet
@@ -111,7 +109,7 @@ class Reader(fileName:String) {
 //    persistDataDB(vin)
 
     // Persist Data to Parquet
-    persistDataParquet(vin)
+//    persistDataParquet(vin)
 
     return vin
   }
@@ -126,37 +124,11 @@ class Reader(fileName:String) {
   }
 
   def persistDataParquet(vin:Vine) {
-    val vineParquet = toVineParquet(vin)
+    val vineParquet = vin.toVineParquet
     parquetWriter.persistUnitary(vineParquet)
   }
 
   def persistanceClose(): Unit = {
     parquetWriter.close()
-  }
-
-  def toVineParquet(vin:Vine) : VineParquet = {
-    val newFeature2D: ImageFeatures2D = new ImageFeatures2D(new URL(vin.getImageURL), true, FeatureDetector.DYNAMIC_ORB, DescriptorExtractor.BRIEF);
-    val descriptor = Descriptor.newBuilder()
-      .setDescriptorType(FeatureDetector.DYNAMIC_ORB+"_"+DescriptorExtractor.BRISK)
-      .setDescriptorHeight(newFeature2D.getEncoder.getHeight)
-      .setDescriptorWidth(newFeature2D.getEncoder.getWidth)
-      .setDescriptorChannels(newFeature2D.getEncoder.getChannels)
-      .setDescriptorData(newFeature2D.getEncoder.getEncodedString)
-      .build()
-    val vineParquet = VineParquet.newBuilder()
-      .setReferenceClient(vin.getReferenceClient)
-      .setReferenceURL(vin.getReferenceURL)
-      .setCodeCPU(vin.getCodeCPU)
-      .setCodeSAQ(vin.getCodeSAQ)
-      .setDegAlcool(vin.getDegAlcool)
-      .setImageURL(vin.getImageURL)
-      .setProduceCountry(vin.getProduceCountry)
-      .setProducer(vin.getProducer)
-      .setProduceRegion(vin.getProduceRegion)
-      .setProductName(vin.getProductName)
-      .setProductType(vin.getProductType)
-      .setDescriptor(descriptor)
-      .build()
-    return vineParquet
   }
 }

@@ -31,7 +31,6 @@ public class FindBestMatch {
         InMemoryDescriptors filmDescriptors = new InMemoryDescriptors("ORB_ORB");
         URL imageURL = new URL("http://www.hack4fun.org/h4f/sites/default/files/bindump/lena_secret.bmp");
         image.loadImage(imageURL);
-
         try {
             image.generateMatches(filmDescriptors);
         } catch (SQLException var4) {

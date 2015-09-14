@@ -1,0 +1,17 @@
+Web Services :
+http://localhost:8080/ability-web/rest
+
+Crawler Services :
+POST
+http://localhost:8080/ability-web/rest/crawler
+{
+    "context":"SAQ",
+    "beginURLs":[
+        "http://www.saq.com/page/fr/saqcom/vin-blanc/13th-street-winery-chardonnay-peninsule-du-niagara-2011/12276952?selectedIndex=2&searchContextId=-10021124429734"
+        ],
+    "maxPages": null
+}
+
+Vine Services :
+http://localhost:8080/ability-web/rest/vines
+

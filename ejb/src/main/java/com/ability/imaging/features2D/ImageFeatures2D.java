@@ -39,7 +39,7 @@ public class ImageFeatures2D {
     private int descriptorType = DescriptorExtractor.BRISK;         // default BRISK
 
     public static void main(String[] args) throws MalformedURLException {
-//        System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
+        System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
 //        URL imageURL = new URL("http://s7d9.scene7.com/is/image/SAQ/00518712-1?rect=0,0,1000,1500&scl=1&id=-Hgqe3");
         URL imageURL = new URL("http://www.hack4fun.org/h4f/sites/default/files/bindump/lena_secret.bmp");
         ImageFeatures2D newFeature2D = new ImageFeatures2D(imageURL, true, FeatureDetector.DYNAMIC_ORB, DescriptorExtractor.BRIEF);
@@ -55,6 +55,12 @@ public class ImageFeatures2D {
     public ImageFeatures2D(URL url, boolean encoded) {
         System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
         this.setImage(url);
+        this.generateMatrices(encoded);
+    }
+
+    public ImageFeatures2D(BufferedImage bufferedImage, boolean encoded) {
+        System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
+        this.setImage(bufferedImage);
         this.generateMatrices(encoded);
     }
 

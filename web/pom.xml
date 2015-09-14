@@ -14,8 +14,6 @@
 
    <name>ability - web</name>
 
-   <url>http://jboss.org/jbossas</url>
-
    <dependencies>
 
       <!-- Dependency on the EJB module so we can use it's services if needed -->

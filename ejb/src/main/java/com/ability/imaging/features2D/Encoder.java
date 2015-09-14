@@ -20,6 +20,13 @@ public class Encoder {
     public Encoder() {
     }
 
+    public Encoder(int height, int width, int channels, String encodedString) {
+        this.height = height;
+        this.encodedString = encodedString;
+        this.channels = channels;
+        this.width = width;
+    }
+
     public void EncoderConstruct(String encodedString, int height, int width, int channels) {
         System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
         this.encodedString = encodedString;

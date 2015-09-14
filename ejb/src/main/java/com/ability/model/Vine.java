@@ -1,10 +1,17 @@
 package com.ability.model;
 
+import com.ability.imaging.features2D.ImageFeatures2D;
+import com.ability.parquet.model.Descriptor;
+import com.ability.parquet.model.VineParquet;
 import org.hibernate.validator.constraints.NotEmpty;
+import org.opencv.features2d.DescriptorExtractor;
+import org.opencv.features2d.FeatureDetector;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 /**
  * Created by ikizema on 15-08-21.
@@ -176,5 +183,31 @@ public class Vine extends BaseModel {
                 ", producer='" + producer + '\'' +
                 ", degAlcool='" + degAlcool + '\'' +
                 '}';
+    }
+
+    public VineParquet toVineParquet() throws MalformedURLException {
+        ImageFeatures2D newFeature2D = new ImageFeatures2D(new URL(this.getImageURL()), true, FeatureDetector.DYNAMIC_ORB, DescriptorExtractor.BRIEF);
+        Descriptor descriptor = Descriptor.newBuilder()
+                .setDescriptorType(FeatureDetector.DYNAMIC_ORB+"_"+DescriptorExtractor.BRISK)
+                .setDescriptorHeight(newFeature2D.getEncoder().getHeight())
+                .setDescriptorWidth(newFeature2D.getEncoder().getWidth())
+                .setDescriptorChannels(newFeature2D.getEncoder().getChannels())
+                .setDescriptorData(newFeature2D.getEncoder().getEncodedString())
+                .build();
+        VineParquet vineParquet = VineParquet.newBuilder()
+                .setReferenceClient(this.getReferenceClient())
+                .setReferenceURL(this.getReferenceURL())
+                .setCodeCPU(this.getCodeCPU())
+                .setCodeSAQ(this.getCodeSAQ())
+                .setDegAlcool(this.getDegAlcool())
+                .setImageURL(this.getImageURL())
+                .setProduceCountry(this.getProduceCountry())
+                .setProducer(this.getProducer())
+                .setProduceRegion(this.getProduceRegion())
+                .setProductName(this.getProductName())
+                .setProductType(this.getProductType())
+                .setDescriptor(descriptor)
+                .build();
+        return vineParquet;
     }
 }

@@ -14,7 +14,7 @@ appender("STDOUT", ConsoleAppender) {
   }
 }
 root(INFO, ["STDOUT"])                            // All packages
-logger("com.ability", DEBUG, ["STDOUT"])          // Only identified package
+//logger("com.ability", DEBUG, ["STDOUT"])          // Only identified package
 
 
 // Activation logger in file
@@ -26,4 +26,4 @@ logger("com.ability", DEBUG, ["STDOUT"])          // Only identified package
 //    pattern = "%level %logger - %msg%n"
 //  }
 //}
-//logger("com.ability", DEBUG, ["FILE"])
+//logger("com.ability.imaging.features2D.MatchAnalysis", DEBUG, ["FILE"])

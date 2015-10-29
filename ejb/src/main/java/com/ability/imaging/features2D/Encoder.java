@@ -1,10 +1,10 @@
 package com.ability.imaging.features2D;
 
+import com.ability.model.Descriptor;
 import org.apache.commons.codec.binary.Base64;
-import org.opencv.core.Core;
-import org.opencv.core.CvType;
-import org.opencv.core.Mat;
-import org.opencv.core.MatOfByte;
+import org.opencv.core.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.xml.bind.DatatypeConverter;
 
@@ -12,12 +12,20 @@ import javax.xml.bind.DatatypeConverter;
  * Created by ikizema on 15-09-02.
  */
 public class Encoder {
+    private static final Logger logger = LoggerFactory.getLogger(Encoder.class.getCanonicalName());
     private int height = 0;
     private int width = 0;
     private int channels = 0;
     private String encodedString = "";
 
     public Encoder() {
+    }
+
+    public Encoder(Descriptor descriptor){
+        this.setHeight(Integer.parseInt(descriptor.getDescriptorHeight().toString()));
+        this.setWidth(Integer.parseInt(descriptor.getDescriptorWidth().toString()));
+        this.setChannels(Integer.parseInt(descriptor.getDescriptorChannels().toString()));
+        this.setEncodedString(descriptor.getDescriptorData().toString());
     }
 
     public Encoder(int height, int width, int channels, String encodedString) {
@@ -28,7 +36,6 @@ public class Encoder {
     }
 
     public void EncoderConstruct(String encodedString, int height, int width, int channels) {
-        System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
         this.encodedString = encodedString;
         this.height = height;
         this.width = width;
@@ -79,6 +86,32 @@ public class Encoder {
 
     public String getEncodedString() {
         return this.encodedString;
+    }
+
+    public void setHeight(int height) {
+        this.height = height;
+    }
+
+    public void setWidth(int width) {
+        this.width = width;
+    }
+
+    public void setChannels(int channels) {
+        this.channels = channels;
+    }
+
+    public void setEncodedString(String encodedString) {
+        this.encodedString = encodedString;
+    }
+
+    @Override
+    public String toString() {
+        return "Encoder{" +
+                "height=" + height +
+                ", width=" + width +
+                ", channels=" + channels +
+                ", encodedString='" + encodedString + '\'' +
+                '}';
     }
 }
 

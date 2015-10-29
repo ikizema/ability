@@ -38,11 +38,10 @@
 
         <!-- Open CV-->
         <dependency>
-            <groupId>org.opencv</groupId>
+            <groupId>org</groupId>
             <artifactId>opencv</artifactId>
             <version>300</version>
-            <scope>system</scope>
-            <systemPath>${basedir}/../lib/opencv-300.jar</systemPath>
+            <scope>provided</scope>
         </dependency>
 
         <!-- Scala -->
@@ -159,6 +158,11 @@
             <groupId>org.jboss.arquillian.protocol</groupId>
             <artifactId>arquillian-protocol-servlet</artifactId>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.fastjson</groupId>
+            <artifactId>boon</artifactId>
+            <version>0.33</version>
         </dependency>
 
     </dependencies>

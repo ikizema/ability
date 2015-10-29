@@ -1,0 +1,52 @@
+Import jar to maven repository :
+ikizema@pc-ikizema:~/DEV/PROJECTS/personal/ability/lib$ mvn install:install-file -Dfile=./opencv-300.jar -DgroupId=org -DartifactId=opencv -Dversion=300 -Dpackaging=jar
+[main] INFO org.apache.maven.cli.event.ExecutionEventLogger - Scanning for projects...
+[main] INFO org.apache.maven.cli.event.ExecutionEventLogger -
+[main] INFO org.apache.maven.cli.event.ExecutionEventLogger - ------------------------------------------------------------------------
+[main] INFO org.apache.maven.cli.event.ExecutionEventLogger - Building Maven Stub Project (No POM) 1
+[main] INFO org.apache.maven.cli.event.ExecutionEventLogger - ------------------------------------------------------------------------
+[main] INFO org.apache.maven.cli.event.ExecutionEventLogger -
+[main] INFO org.apache.maven.cli.event.ExecutionEventLogger - --- maven-install-plugin:2.4:install-file (default-cli) @ standalone-pom ---
+[main] INFO org.codehaus.plexus.PlexusContainer - Installing /home/ikizema/DEV/PROJECTS/personal/ability/lib/opencv-300.jar to /home/ikizema/.m2/repository/org/opencv/300/opencv-300.jar
+[main] INFO org.codehaus.plexus.PlexusContainer - Installing /tmp/mvninstall7935641993449307242.pom to /home/ikizema/.m2/repository/org/opencv/300/opencv-300.pom
+[main] INFO org.apache.maven.cli.event.ExecutionEventLogger - ------------------------------------------------------------------------
+[main] INFO org.apache.maven.cli.event.ExecutionEventLogger - BUILD SUCCESS
+[main] INFO org.apache.maven.cli.event.ExecutionEventLogger - ------------------------------------------------------------------------
+[main] INFO org.apache.maven.cli.event.ExecutionEventLogger - Total time: 0.618 s
+[main] INFO org.apache.maven.cli.event.ExecutionEventLogger - Finished at: 2015-09-14T13:29:13-04:00
+[main] INFO org.apache.maven.cli.event.ExecutionEventLogger - Final Memory: 8M/240M
+[main] INFO org.apache.maven.cli.event.ExecutionEventLogger - ------------------------------------------------------------------------
+
+
+--------------------------------------------------------------------------
+
+Load opencv for jboss :
+standalone.xml :
+        <subsystem xmlns="urn:jboss:domain:ee:1.0">
+            <global-modules>
+                <module name="org.opencv" slot="main"/>
+            </global-modules>
+        </subsystem>
+Create module and add native libraries.
+Create opencv Loader :
+package org.opencv.core;
+public class Loader {
+    public Loader() {
+    }
+    public static void loadLibrary(String name) {
+        System.loadLibrary(name);
+    }
+}
+        try {
+            Loader.loadLibrary("opencv_java300");
+        } catch (java.lang.NoClassDefFoundError ex) {
+            System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
+        }
+
+
+--------------------------------------------------------------------------
+
+Java encrease heap space
+export "JAVA_OPTS=-Xms1024m -Xmx2048m"
+
+

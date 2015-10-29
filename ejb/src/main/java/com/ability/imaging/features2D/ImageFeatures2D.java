@@ -1,9 +1,6 @@
 package com.ability.imaging.features2D;
 
-import org.opencv.core.Core;
-import org.opencv.core.CvType;
-import org.opencv.core.Mat;
-import org.opencv.core.MatOfKeyPoint;
+import org.opencv.core.*;
 import org.opencv.features2d.DescriptorExtractor;
 import org.opencv.features2d.FeatureDetector;
 import org.opencv.features2d.Features2d;
@@ -39,7 +36,11 @@ public class ImageFeatures2D {
     private int descriptorType = DescriptorExtractor.BRISK;         // default BRISK
 
     public static void main(String[] args) throws MalformedURLException {
-        System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
+        try {
+            Loader.loadLibrary("opencv_java300");
+        } catch (java.lang.NoClassDefFoundError ex) {
+            System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
+        }
 //        URL imageURL = new URL("http://s7d9.scene7.com/is/image/SAQ/00518712-1?rect=0,0,1000,1500&scl=1&id=-Hgqe3");
         URL imageURL = new URL("http://www.hack4fun.org/h4f/sites/default/files/bindump/lena_secret.bmp");
         ImageFeatures2D newFeature2D = new ImageFeatures2D(imageURL, true, FeatureDetector.DYNAMIC_ORB, DescriptorExtractor.BRIEF);
@@ -48,24 +49,56 @@ public class ImageFeatures2D {
         logger.info(newFeature2D.getImageDescriptorEncoded());
     }
 
+    public int getDetectorType() {
+        return detectorType;
+    }
+
+    public void setDetectorType(int detectorType) {
+        this.detectorType = detectorType;
+    }
+
+    public int getDescriptorType() {
+        return descriptorType;
+    }
+
+    public void setDescriptorType(int descriptorType) {
+        this.descriptorType = descriptorType;
+    }
+
     public ImageFeatures2D() {
-        System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
+        try {
+            Loader.loadLibrary("opencv_java300");
+        } catch (java.lang.NoClassDefFoundError ex) {
+            System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
+        }
     }
 
     public ImageFeatures2D(URL url, boolean encoded) {
-        System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
+        try {
+            Loader.loadLibrary("opencv_java300");
+        } catch (java.lang.NoClassDefFoundError ex) {
+            System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
+        }
         this.setImage(url);
         this.generateMatrices(encoded);
     }
 
     public ImageFeatures2D(BufferedImage bufferedImage, boolean encoded) {
-        System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
+        try {
+            Loader.loadLibrary("opencv_java300");
+        } catch (java.lang.NoClassDefFoundError ex) {
+            System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
+        }
         this.setImage(bufferedImage);
         this.generateMatrices(encoded);
     }
 
     public ImageFeatures2D(URL url, boolean encoded, int detectorType, int descriptorType) {
-        System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
+        try {
+            Loader.loadLibrary("opencv_java300");
+        } catch (java.lang.NoClassDefFoundError ex) {
+            System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
+        }
         this.setImage(url);
         this.generateMatrices(encoded);
     }
